@@ -1,0 +1,94 @@
+ <!doctype html>
+
+<html lang="en">  
+<head>  
+<meta charset="utf-8" />  
+<meta name="viewport" content="width=device-width,initial-scale=1" />  
+<title>Checkout — Address · Summary · Payment</title>  
+<style>  
+  :root{  
+      --accent: #FFA500;  
+      --pay-green: #3b8132;  
+      --muted: #777;  
+      --border: #e6e6e6;  
+      --bg: #f7f7f7;  
+      --danger: #ff0000;  
+  }  
+  *{box-sizing:border-box;font-family:Arial, Helvetica, sans-serif}  
+  body{margin:0;background:var(--bg);color:#222;-webkit-font-smoothing:antialiased}  
+  header{display:flex;align-items:center;padding:12px 14px;background:#fff;border-bottom:1px solid var(--border)}  
+  .back{font-size:22px;margin-right:8px;cursor:pointer;color:#333}  
+  header h1{flex:1;font-size:20px;text-align:center;margin:0;font-weight:600}  
+  .steps{display:flex;background:#fff;border-bottom:1px solid var(--border);padding:14px 12px;gap:8px;justify-content:space-around}  
+  .step{flex:1;text-align:center}  
+  .circle{width:34px;height:34px;border-radius:50%;display:inline-block;line-height:34px;color:#fff;font-weight:600}  
+  .step .label{display:block;margin-top:8px;font-size:13px;color:#333}  
+  .step.active .circle{background:var(--accent)}  
+  .step.done .circle{background:var(--accent)}  
+  .step.inactive .circle{background:#d9d9d9}  
+  main{padding:14px}  
+  .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px}  
+  input[type="text"], input[type="tel"], select{  
+    width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);font-size:15px;margin:8px 0;  
+    background:#fff;  
+  }  
+  .row {display:flex;gap:10px}  
+  .row .half{flex:1}  
+  .btn{display:block;width:100%;padding:14px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:700;font-size:16px;cursor:pointer;margin-top:12px}  
+  .btn:active{opacity:0.95}  
+  .muted{color:var(--muted)}  
+  .product-block{display:flex;gap:12px;align-items:flex-start}  
+  .product-block img{width:92px;height:92px;border-radius:8px;border:1px solid #eee;object-fit:cover}  
+  .price-row{display:flex;justify-content:space-between;align-items:center;margin:6px 0}  
+  .strike{text-decoration:line-through;color:#9a9a9a;margin-right:8px}  
+  .green{color:green;font-weight:700}  .upi-option{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;border:1px solid var(--border);background:#fff;margin:10px 0;cursor:pointer}
+.upi-option img{width:36px;height:36px;object-fit:contain}
+.upi-option.active{border:2px solid var(--accent);background:#fff6ea}
+.banner{background:#ffd500;padding:12px;text-align:center;font-weight:700;border-radius:6px;margin-bottom:10px}
+.offer{padding:10px 0;text-align:center;color:#c00;font-weight:600}
+footer.icons{display:flex;gap:12px;justify-content:space-around;padding:12px 0;border-top:1px solid var(--border)}
+footer.icons div{text-align:center;font-size:12px;color:var(--muted)}
+footer.icons img{width:28px;height:28px;margin-bottom:6px;opacity:0.95}
+
+/* Pay Button */  
+.pay-now-wrap {  
+  position: sticky;  
+  bottom: 0;  
+  left: 0;  
+  right: 0;  
+  background: #fff;  
+  padding: 10px 15px;  
+  border-top: 1px solid var(--border);  
+}  
+
+.pay-btn {  
+  display: block;  
+  color: #FFFFFF;  
+  width: 100%;  
+  padding: 14px;  
+  background: var(--accent);  
+  border-radius: 8px;  
+  border: none;  
+  font-weight: 700;  
+  font-size: 16px;  
+  cursor: pointer;  
+}  
+
+.pay-btn:disabled {  
+  background: #ddd;  
+  cursor: not-allowed;  
+}  
+
+.pay-btn:hover {  
+  background: #e0a800;  
+}
+
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:1000}
+.modal .box{background:#fff;padding:18px;border-radius:12px;width:320px;max-width:94%}
+.small-muted{font-size:13px;color:var(--muted)}
+@media(min-width:900px){main{max-width:800px;margin:0 auto}}
+</style>
+
+</head>  
+<body> ... (truncated for brevity) ... </body>  
+</html>

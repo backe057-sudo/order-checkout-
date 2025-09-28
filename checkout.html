@@ -1,94 +1,461 @@
- <!doctype html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Checkout — Address · Summary · Payment</title>
+<style>
+  :root{
+      --accent: #FFA500;
+      --pay-green: #3b8132;
+      --muted: #777;
+      --border: #e6e6e6;
+      --bg: #f7f7f7;
+      --danger: #ff0000;
+  }
+  *{box-sizing:border-box;font-family:Arial, Helvetica, sans-serif}
+  body{margin:0;background:var(--bg);color:#222;-webkit-font-smoothing:antialiased}
+  header{display:flex;align-items:center;padding:12px 14px;background:#fff;border-bottom:1px solid var(--border)}
+  .back{font-size:22px;margin-right:8px;cursor:pointer;color:#333}
+  header h1{flex:1;font-size:20px;text-align:center;margin:0;font-weight:600}
+  .steps{display:flex;background:#fff;border-bottom:1px solid var(--border);padding:14px 12px;gap:8px;justify-content:space-around}
+  .step{flex:1;text-align:center}
+  .circle{width:34px;height:34px;border-radius:50%;display:inline-block;line-height:34px;color:#fff;font-weight:600}
+  .step .label{display:block;margin-top:8px;font-size:13px;color:#333}
+  .step.active .circle{background:var(--accent)}
+  .step.done .circle{background:var(--accent)}
+  .step.inactive .circle{background:#d9d9d9}
+  main{padding:14px}
+  .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px}
+  input[type="text"], input[type="tel"], select{
+    width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);font-size:15px;margin:8px 0;
+    background:#fff;
+  }
+  .row {display:flex;gap:10px}
+  .row .half{flex:1}
+  .btn{display:block;width:100%;padding:14px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:700;font-size:16px;cursor:pointer;margin-top:12px}
+  .btn:active{opacity:0.95}
+  .muted{color:var(--muted)}
+  .product-block{display:flex;gap:12px;align-items:flex-start}
+  .product-block img{width:92px;height:92px;border-radius:8px;border:1px solid #eee;object-fit:cover}
+  .price-row{display:flex;justify-content:space-between;align-items:center;margin:6px 0}
+  .strike{text-decoration:line-through;color:#9a9a9a;margin-right:8px}
+  .green{color:green;font-weight:700}
 
-<html lang="en">  
-<head>  
-<meta charset="utf-8" />  
-<meta name="viewport" content="width=device-width,initial-scale=1" />  
-<title>Checkout — Address · Summary · Payment</title>  
-<style>  
-  :root{  
-      --accent: #FFA500;  
-      --pay-green: #3b8132;  
-      --muted: #777;  
-      --border: #e6e6e6;  
-      --bg: #f7f7f7;  
-      --danger: #ff0000;  
-  }  
-  *{box-sizing:border-box;font-family:Arial, Helvetica, sans-serif}  
-  body{margin:0;background:var(--bg);color:#222;-webkit-font-smoothing:antialiased}  
-  header{display:flex;align-items:center;padding:12px 14px;background:#fff;border-bottom:1px solid var(--border)}  
-  .back{font-size:22px;margin-right:8px;cursor:pointer;color:#333}  
-  header h1{flex:1;font-size:20px;text-align:center;margin:0;font-weight:600}  
-  .steps{display:flex;background:#fff;border-bottom:1px solid var(--border);padding:14px 12px;gap:8px;justify-content:space-around}  
-  .step{flex:1;text-align:center}  
-  .circle{width:34px;height:34px;border-radius:50%;display:inline-block;line-height:34px;color:#fff;font-weight:600}  
-  .step .label{display:block;margin-top:8px;font-size:13px;color:#333}  
-  .step.active .circle{background:var(--accent)}  
-  .step.done .circle{background:var(--accent)}  
-  .step.inactive .circle{background:#d9d9d9}  
-  main{padding:14px}  
-  .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px}  
-  input[type="text"], input[type="tel"], select{  
-    width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);font-size:15px;margin:8px 0;  
-    background:#fff;  
-  }  
-  .row {display:flex;gap:10px}  
-  .row .half{flex:1}  
-  .btn{display:block;width:100%;padding:14px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:700;font-size:16px;cursor:pointer;margin-top:12px}  
-  .btn:active{opacity:0.95}  
-  .muted{color:var(--muted)}  
-  .product-block{display:flex;gap:12px;align-items:flex-start}  
-  .product-block img{width:92px;height:92px;border-radius:8px;border:1px solid #eee;object-fit:cover}  
-  .price-row{display:flex;justify-content:space-between;align-items:center;margin:6px 0}  
-  .strike{text-decoration:line-through;color:#9a9a9a;margin-right:8px}  
-  .green{color:green;font-weight:700}  .upi-option{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;border:1px solid var(--border);background:#fff;margin:10px 0;cursor:pointer}
-.upi-option img{width:36px;height:36px;object-fit:contain}
-.upi-option.active{border:2px solid var(--accent);background:#fff6ea}
-.banner{background:#ffd500;padding:12px;text-align:center;font-weight:700;border-radius:6px;margin-bottom:10px}
-.offer{padding:10px 0;text-align:center;color:#c00;font-weight:600}
-footer.icons{display:flex;gap:12px;justify-content:space-around;padding:12px 0;border-top:1px solid var(--border)}
-footer.icons div{text-align:center;font-size:12px;color:var(--muted)}
-footer.icons img{width:28px;height:28px;margin-bottom:6px;opacity:0.95}
+  .upi-option{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;border:1px solid var(--border);background:#fff;margin:10px 0;cursor:pointer}
+  .upi-option img{width:36px;height:36px;object-fit:contain}
+  .upi-option.active{border:2px solid var(--accent);background:#fff6ea}
+  .banner{background:#ffd500;padding:12px;text-align:center;font-weight:700;border-radius:6px;margin-bottom:10px}
+  .offer{padding:10px 0;text-align:center;color:#c00;font-weight:600}
+  footer.icons{display:flex;gap:12px;justify-content:space-around;padding:12px 0;border-top:1px solid var(--border)}
+  footer.icons div{text-align:center;font-size:12px;color:var(--muted)}
+  footer.icons img{width:28px;height:28px;margin-bottom:6px;opacity:0.95}
 
-/* Pay Button */  
-.pay-now-wrap {  
-  position: sticky;  
-  bottom: 0;  
-  left: 0;  
-  right: 0;  
-  background: #fff;  
-  padding: 10px 15px;  
-  border-top: 1px solid var(--border);  
-}  
+      /* Pay Button */
+    .pay-now-wrap {
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 10px 15px;
+      border-top: 1px solid var(--border);
+    }
 
-.pay-btn {  
-  display: block;  
-  color: #FFFFFF;  
-  width: 100%;  
-  padding: 14px;  
-  background: var(--accent);  
-  border-radius: 8px;  
-  border: none;  
-  font-weight: 700;  
-  font-size: 16px;  
-  cursor: pointer;  
-}  
+    .pay-btn {
+      display: block;
+      color: #FFFFFF;
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      border-radius: 8px;
+      border: none;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+    }
 
-.pay-btn:disabled {  
-  background: #ddd;  
-  cursor: not-allowed;  
-}  
+    .pay-btn:disabled {
+      background: #ddd;
+      cursor: not-allowed;
+    }
 
-.pay-btn:hover {  
-  background: #e0a800;  
+    .pay-btn:hover {
+      background: #e0a800;
+    }
+
+
+  .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:1000}
+  .modal .box{background:#fff;padding:18px;border-radius:12px;width:320px;max-width:94%}
+  .small-muted{font-size:13px;color:var(--muted)}
+  @media(min-width:900px){main{max-width:800px;margin:0 auto}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="back" id="backBtn" title="Back" onclick="onBack()">←</div>
+  <h1 id="pageTitle">Add delivery address</h1>
+</header>
+
+<div class="steps" aria-hidden="true">
+  <div class="step active" id="s-step1"><div class="circle">1</div><div class="label">Address</div></div>
+  <div class="step inactive" id="s-step2"><div class="circle">2</div><div class="label">Order Summary</div></div>
+  <div class="step inactive" id="s-step3"><div class="circle">3</div><div class="label">Payment</div></div>
+</div>
+
+<main>
+
+  <section id="step1" class="card" aria-labelledby="pageTitle">
+    <input id="fullname" type="text" placeholder="Full Name (Required)*" />
+    <input id="mobile" type="tel" placeholder="Mobile number (Required)*" />
+    <input id="pincode" type="text" placeholder="Pincode (Required)*" />
+    <div class="row">
+      <div class="half">
+        <input id="city" type="text" placeholder="City (Required)*" />
+      </div>
+      <div class="half">
+        <select id="state">
+          <option value="">State</option>
+          <option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option><option>Bihar</option>
+          <option>Chhattisgarh</option><option>Goa</option><option>Gujarat</option><option>Haryana</option>
+          <option>Himachal Pradesh</option><option>Jharkhand</option><option>Karnataka</option><option>Kerala</option>
+          <option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option><option>Meghalaya</option>
+          <option>Mizoram</option><option>Nagaland</option><option>Odisha</option><option>Punjab</option>
+          <option>Rajasthan</option><option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option>
+          <option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option><option>West Bengal</option>
+        </select>
+      </div>
+    </div>
+    <input id="house" type="text" placeholder="House No., Building Name" />
+    <input id="road" type="text" placeholder="Road name, Area, Colony" />
+    <div id="addrFeedback" class="small-muted" style="min-height:18px"></div>
+    <button class="btn" id="saveAddressBtn" onclick="saveAddress()">Save Address</button>
+  </section>
+
+
+
+
+
+
+<section id="step2" style="display:none">
+  <div class="card">
+
+    <div id="deliveredTo" style="margin-bottom:12px"></div>
+    <div class="product-block">
+      <img src="https://i.ibb.co/fY7KdpM8/Screenshot-2025-09-18-10-34-25-809-com-whatsapp-edit-2.jpg" alt="product">
+      <div>
+        
+        <div style="font-weight:700;font-size:16px;margin-bottom:6px">Fortune, Soyabean Refined Oil 5L Jar + Fortune Everyday Basmati Rice, 5KG Bag Combo.</div>
+        <div style="color:#FFB343;font-size:15px;margin-bottom:6px">★★★★★</div>
+        <div style="margin-bottom:6px">Qty: 1</div>
+        <div><span style="color:green;font-weight:700;margin-right:6px">80%</span><span class="strike">₹2,499</span><span style="font-weight:700;margin-left:8px">₹499.00</span></div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="price-row"><div>Price (1 item)</div><div>₹2499.00</div></div>
+    <div class="price-row"><div>Discount</div><div class="green">₹2000.00</div></div>
+    <div class="price-row"><div>Delivery Charges</div><div class="green">FREE Delivery</div></div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+    <div class="price-row" style="font-weight:700"><div>Total Amount</div><div>₹499.00</div></div>
+    <div style="color:var(--pay-green);font-weight:700;margin-top:8px">You will save ₹2000.00 on this order</div>
+  </div>
+       <footer class="icons card" style="margin-top:10px">
+      <div><img src="https://i.ibb.co/QvQHJMhg/original-3.png" alt=""><div>Authentic<br>Products</div></div>
+      <div><img src="https://i.ibb.co/LHVjMV9/shield.png" alt=""><div>Secure<br>Payments</div></div>
+      <div><img src="https://i.ibb.co/jZHv0bTW/return.png" alt=""><div>Easy<br>Returns</div></div>
+    </footer>
+
+
+  <div>
+    <button class="btn" style="width:100%;background:#FFB343" onclick="toPayment()">Continue</button>
+  </div>
+</section>
+  
+  <section id="step3" style="display:none">
+  <section id="payment-page">
+    <div class="banner">Get Up To 80% Discount On All UPI Payments</div>
+    <div class="offer">Offer ends in <span id="timerText">05min 00sec</span></div>
+
+
+    <div class="card" id="payDelivered" style="margin-bottom:10px"></div>
+
+
+      <div class="upi-option" data-link="phonepe://upi/pay?pa=merchant@upi&pn=Merchant&am=499&cu=INR" onclick="selectUPI(this)">
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/DH9sX5y1/images.png" alt="images" border="0"></a>
+        <div>PhonePe</div>
+      </div>
+
+      <div class="upi-option" data-link="paytmmp://pay?pa=merchant@upi&pn=Merchant&am=499&cu=INR" onclick="selectUPI(this)">
+     <a href="https://imgbb.com/"><img src="https://i.ibb.co/tpd5J13X/paytm-icon.png" alt="paytm-icon" border="0"></a>        <div>Paytm</div>
+      </div>
+
+      <div class="upi-option" data-link="tez://upi/pay?pa=merchant@upi&pn=Merchant&am=499&cu=INR" onclick="selectUPI(this)">
+       <a href="https://imgbb.com/"><img src="https://i.ibb.co/nNhW8D8h/google-pay-icon.png" alt="google-pay-icon" border="0"></a>
+        <div>Google Pay</div>
+      </div>
+
+      <div class="upi-option" data-link="upi://pay?pa=merchant@upi&pn=Merchant&am=499&cu=INR" onclick="selectUPI(this)">
+   <img src="https://i.ibb.co/bcJGsFf/free-upi-logo-icon-svg-download-png-1747946.png" alt="ALL-UPI"><div>ALL - UPI</div>
+      </div>
+
+      <div class="upi-option" data-link="qr" onclick="selectUPI(this)">
+   <img src="https://i.ibb.co/4R0rZ1pX/qr-code-PNG33.png" alt="QR"><div>UPI - QR CODE</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="price-row"><div>Price (1 item)</div><del>₹2,499.00</del></div>
+      <div class="price-row"><div>Delivery Charges</div><div style="color:green">FREE</div></div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+      <div class="price-row" style="font-weight:800"><div>Amount Payable</div>
+        <div style="color:var(--pay-green);font-size:20px;font-weight:900">₹499.00</div>
+      </div>
+      <div style="margin-top:8px"><span class="strike">₹2,499.00</span> <span style="font-weight:800">499.00</span></div>
+    </div>
+
+    <footer class="icons card" style="margin-top:10px">
+      <div><img src="https://i.ibb.co/QvQHJMhg/original-3.png" alt=""><div>Authentic<br>Products</div></div>
+      <div><img src="https://i.ibb.co/LHVjMV9/shield.png" alt=""><div>Secure<br>Payments</div></div>
+      <div><img src="https://i.ibb.co/jZHv0bTW/return.png" alt=""><div>Easy<br>Returns</div></div>
+    </footer>
+
+
+    <div class="pay-now-wrap">
+      <button class="pay-btn" onclick="payNow()">Pay Now</button>
+    </div>
+  </section>
+</main>
+
+
+<div id="qrModal" class="modal" onclick="closeQR(event)">
+  <div class="box" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+    <h3 style="margin:0 0 8px 0">Scan to Pay</h3>
+    <div id="qrcode" style="text-align:center;margin:12px 0"></div>
+    <div style="text-align:right">
+      <button class="btn" style="background:var(--accent)" onclick="closeQR()">Close</button>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+
+const STEPS = {1:'step1',2:'step2',3:'step3'};
+let currentStep = 1;
+let selectedUpi = null;
+const localKey = 'checkout_address_demo'; // localStorage key
+
+function setStepVisual(step) {
+  currentStep = step;
+  document.getElementById('pageTitle').innerText = step===1?'Add delivery address': step===2? 'Order Summary':'Payment';
+
+  for (const s in STEPS) {
+    document.getElementById(STEPS[s]).style.display = (Number(s)===step) ? (s==1? 'block':'block') : 'none';
+
+    document.getElementById('s-step'+s).className = 'step ' + (Number(s) < step ? 'done' : (Number(s)===step ? 'active' : 'inactive'));
+  }
+
+}
+function onBack(){
+  if (currentStep === 3) { setStepVisual(2); }
+  else if (currentStep === 2) { setStepVisual(1); }
+  else { /* first page: nothing or navigate away */ }
 }
 
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:1000}
-.modal .box{background:#fff;padding:18px;border-radius:12px;width:320px;max-width:94%}
-.small-muted{font-size:13px;color:var(--muted)}
-@media(min-width:900px){main{max-width:800px;margin:0 auto}}
-</style>
 
-</head>  
-<body> ... (truncated for brevity) ... </body>  
+function validateAddress(data) {
+  if (!data.fullname || data.fullname.trim().length<2) return "Enter a valid full name.";
+  if (!/^[6-9]\d{9}$/.test(data.mobile)) return "Enter a valid 10-digit Indian mobile number starting 6-9.";
+  if (!/^\d{6}$/.test(data.pincode)) return "Enter a valid 6-digit pincode.";
+  if (!data.city || !data.state) return "City and State are required.";
+  return null;
+}
+
+
+(function init(){
+  // Clear localStorage on page load to ensure fresh start for each user
+  localStorage.removeItem(localKey);
+  
+  const addr = loadAddress();
+  if (addr) {
+    document.getElementById('fullname').value = addr.fullname||'';
+    document.getElementById('mobile').value = addr.mobile||'';
+    document.getElementById('pincode').value = addr.pincode||'';
+    document.getElementById('city').value = addr.city||'';
+    document.getElementById('state').value = addr.state||'';
+    document.getElementById('house').value = addr.house||'';
+    document.getElementById('road').value = addr.road||'';
+
+    populateSummaryUI(addr);
+  }
+  setStepVisual(1);
+})();
+
+function saveAddress(){
+  const addr = {
+    fullname: document.getElementById('fullname').value.trim(),
+    mobile: document.getElementById('mobile').value.trim(),
+    pincode: document.getElementById('pincode').value.trim(),
+    city: document.getElementById('city').value.trim(),
+    state: document.getElementById('state').value,
+    house: document.getElementById('house').value.trim(),
+    road: document.getElementById('road').value.trim()
+  };
+  const err = validateAddress(addr);
+  const fb = document.getElementById('addrFeedback');
+  if (err) { fb.innerText = err; fb.style.color = '#c00'; return; }
+  localStorage.setItem(localKey, JSON.stringify(addr));
+  fb.innerText = 'Address saved. Proceeding to Order Summary...'; fb.style.color = '#2b7a2b';
+  populateSummaryUI(addr);
+  setTimeout(()=>setStepVisual(2), 350); // small pause so user sees feedback
+}
+
+function loadAddress() {
+  try {
+    const raw = localStorage.getItem(localKey);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e){ return null; }
+}
+
+function populateSummaryUI(addr) {
+  if (!addr) return;
+  const el = document.getElementById('deliveredTo');
+  const parts = [];
+  if (addr.house) parts.push(addr.house);
+  if (addr.road) parts.push(addr.road);
+  parts.push(addr.city);
+  parts.push(addr.state);
+  parts.push(addr.pincode);
+  el.innerHTML = '<div style="font-size:13px;color:var(--muted)">Delivered to:</div>'
+               + `<div style="font-weight:700;margin-top:6px">${escapeHtml(addr.fullname)}</div>`
+               + `<div class="small-muted" style="margin-top:4px">${escapeHtml(addr.mobile)}</div>`
+               + `<div style="margin-top:6px" class="small-muted">${escapeHtml(parts.join(', '))}</div>`;
+
+  const payEl = document.getElementById('payDelivered');
+  if (payEl) payEl.innerHTML = el.innerHTML;
+}
+
+function editAddress(){
+  setStepVisual(1);
+
+  const addr = loadAddress();
+  if (addr) {
+    document.getElementById('fullname').value = addr.fullname||'';
+    document.getElementById('mobile').value = addr.mobile||'';
+    document.getElementById('pincode').value = addr.pincode||'';
+    document.getElementById('city').value = addr.city||'';
+    document.getElementById('state').value = addr.state||'';
+    document.getElementById('house').value = addr.house||'';
+    document.getElementById('road').value = addr.road||'';
+  }
+}
+
+
+function toPayment(){
+
+  const addr = loadAddress();
+  if (!addr) {
+    document.getElementById('addrFeedback').innerText = 'Please save a delivery address first.';
+    document.getElementById('addrFeedback').style.color = '#c00';
+    setStepVisual(1);
+    return;
+  }
+  populateSummaryUI(addr);
+  setStepVisual(3);
+}
+
+
+function selectUPI(elem){
+  document.querySelectorAll('.upi-option').forEach(o=>o.classList.remove('active'));
+  elem.classList.add('active');
+  const link = elem.getAttribute('data-link');
+  selectedUpi = link;
+}
+
+
+function openQR(upiString){
+  const modal = document.getElementById('qrModal');
+  const qrContainer = document.getElementById('qrcode');
+  qrContainer.innerHTML = '';
+  new QRCode(qrContainer, {
+    text: upiString,
+    width: 220,
+    height: 220,
+    colorDark: "#000000",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+  modal.style.display = 'flex';
+}
+function closeQR(e){
+  if (e && e.target && e.target.classList && e.target.classList.contains('modal')) {
+    document.getElementById('qrModal').style.display = 'none';
+    return;
+  }
+  document.getElementById('qrModal').style.display = 'none';
+}
+
+
+function buildUPI(overrideLink){
+
+  if (!overrideLink) return null;
+  if (overrideLink === 'qr') {
+
+    return 'upi://pay?pa=merchant@upi&pn=DemoMerchant&am=499&cu=INR';
+  }
+  return overrideLink;
+}
+
+function payNow(){
+  if (!selectedUpi) { alert('Please select a UPI option first.'); return; }
+  if (selectedUpi === 'qr') {
+    const upi = buildUPI('qr');
+    openQR(upi);
+    return;
+  }
+  const upiURI = buildUPI(selectedUpi);
+
+  window.location.href = upiURI;
+}
+
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+
+
+(function(){
+  let seconds = 5*60;
+  const timerEl = document.getElementById('timerText');
+  setInterval(()=>{
+    if (seconds<=0) return;
+    seconds--;
+    const m = Math.floor(seconds/60), s = seconds%60;
+    timerEl.innerText = `${m}min ${s<10?'0'+s:s}sec`;
+  },1000);
+})();
+
+
+(function init(){
+  const existing = loadAddress();
+  if (existing) {
+
+    document.getElementById('fullname').value = existing.fullname||'';
+    document.getElementById('mobile').value = existing.mobile||'';
+    document.getElementById('pincode').value = existing.pincode||'';
+    document.getElementById('city').value = existing.city||'';
+    document.getElementById('state').value = existing.state||'';
+    document.getElementById('house').value = existing.house||'';
+    document.getElementById('road').value = existing.road||'';
+
+    populateSummaryUI(existing);
+  }
+  setStepVisual(1);
+})();
+
+</script>
+</body>
 </html>
